@@ -52,3 +52,16 @@ mastodon/statsd-exporter: "true"
 {{- end }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+  Annotations added to every statsd_exporter-enabled pod
+*/}}
+{{- define "mastodon.statsdExporterAnnotations" }}
+{{- with .Values.mastodon.metrics.statsd }}
+{{- if and .exporter.enabled (not .address) }}
+prometheus.io/scrape: "true"
+prometheus.io/port: "{{ .exporter.port }}"
+{{- end }}
+{{- end }}
+{{- end }}
